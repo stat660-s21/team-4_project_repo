@@ -41,7 +41,7 @@ title1 justify=left
 'Question 1 of 3: Which of the stations experienced the highest increase in frequency of entries, between January 2009 and January 2010?';
 
 title2 justify=left 
-'Rationale: This question helps us to understand which station is frequented or busy in general, and if there was a significant difference in ridership from 2009to 2010.';
+'Rationale: This question helps us to understand which station is frequented or busy in general, and if there was a significant difference in ridership from 2009 to 2010.';
 
 footnote1 justify=left
 'The output shows comparison of summary statistics for riders in 2009 versus 2010.';
@@ -76,12 +76,14 @@ footnote;
 
 /*data visualization to study question number one */
 title "Plot of Riders in 2009 vs 2010";
+footnote "The output shows that stations GlenPark, 24th and 16th showed a decrease in ridership in 2010";
 proc sgplot data=Ridership_output1;
-    hbox Ride0901 /category=Entry;
-    hbox Ride1001 /category=Entry; 
+    hbox Ride0901 /category=Entry boxwidth=0.8 NOOUTLIERS GROUPDISPLAY=CLUSTER;
+    hbox Ride1001 /category=Entry boxwidth=0.8 NOOUTLIERS GROUPDISPLAY=CLUSTER; 
   ;
 run;
 title;
+footnote;
 
 *******************************************************************************;
 * Research Question 2 Analysis Starting Point;
@@ -109,7 +111,7 @@ title2
 'Rationale: To see how Covid-19 affected Bart Ridership during State of Emergency.';
 
 footnote1 justify=left
-'The output shows comparison of riders in January of 2020 versus January of 2010.';
+'The output shows comparison of riders in January of 2020 versus January of 2021.';
 
 footnote2 justify=left 
 'Result shows that all stations sharply decreased in riders in January of 2021 but Montgomery street,Embarcadero and Concord showed the most significant changes.';
@@ -138,12 +140,15 @@ footnote;
 
 /*data visualization to study question number two */
 title "Comparison of Riders in 2020 vs 2021";
+footnote "Result shows that all stations sharply decreased in riders in January of 2021 but Montgomery street,Embarcadero and Concord showed the most significant changes.";
+
 proc sgplot data=Ridership_output2;
-    hbox Ride2001 /category=Entry;
-    hbox Ride2101 /category=Entry; 
+    hbox Ride2001 /category=Entry boxwidth=0.8 NOOUTLIERS GROUPDISPLAY=CLUSTER;
+    hbox Ride2101 /category=Entry boxwidth=0.8 NOOUTLIERS GROUPDISPLAY=CLUSTER; 
   ;
 run;
 title;
+footnote;
 
 *******************************************************************************;
 * Research Question 3 Analysis Starting Point;
@@ -153,12 +158,11 @@ title;
 Limitation: Any values that are missing or duplicates should be excluded from 
 data analysis.
 
-Methodology: Using proc freq, we can compare the trend in the four columns. Using
-proc corr, we can study the relationship amongst the four years. Each of the years
-are seen as an independent variable.  
+Methodology: Using proc corr, we can study the relationship amongst the four years. 
+Each of the years are seen as an independent variable.  
 
-Followups Steps: Output shows that the frequency procedure is not ideal for
-multiple categories dataset. Further analysis can be done using time series analysis
+Followups Steps: Output shows that the correlation procedure is not ideal for
+our categories dataset. Further analysis can be done using time series analysis
 to get a more vivid picture of the trend.
 
 Notes: This looks at the correlation amongst the four columns. 
@@ -170,29 +174,18 @@ title2 justify=left
 'Rationale: This could help us understand whether or not people move around within the bay area for work as well as for residence.';
 
 footnote1 justify=left
-'Results of correlation procedure show there is a strong correlation between 2009 and 2010 ridership, where as 2020 and 2101 not.';
+'Results of correlation procedure show there is not a strong correlation between 2009 and 2010 ridership, where as 2020 and 2101 not.';
 
 footnote2 justify=left 
-'The results somewhat make sense since the trends between 2009 and 2010 are very similar, whereas 2021 is a peculiar case.';
-
-/* studying frequency of exits from merged dataset */
-proc freq
-    data= Ridership;
-    table Exit/ missing out=Exit_frequency09;
-run;
-proc print;run;
+'The results somewhat make sense although the trends between 2009 and 2010 are very similar,there is not a linear relationship between the years.';
 title;
 footnote;
 
-proc freq
-    data= Ridership;
-    table Exit*Ride1001/ missing out=Exit_frequency10;
-run;
-proc print;run;
-
 /*correlation coefficient to look at trend amongst the four years*/
 title "Ridership Correlation of Four Years";
+footnote 'The results somewhat make sense although the trends between 2009 and 2010 are very similar,there is not a linear relationship between the years.';
 proc corr data= Ridership outp=correlation_output;
 run;
 proc print data=correlation_output;proc print;run;
 title;
+footnote;
